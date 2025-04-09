@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    <div class="profile-container">
+        <h1 class="profile-title">Your Profile</h1>
+        <div class="profile-details">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email|default:"Not provided" }}</p>
+        </div>
+        <a href="{% url 'edit_profile' %}" class="btn btn-edit">Edit Profile</a>
+        <p class="back-link"><a href="{% url 'dashboard' %}">Back to Dashboard</a></p>
+    </div>
+
+    <style>
+        .profile-container {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 35px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease forwards;
+        }
+        .profile-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .profile-details {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .profile-details:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .profile-details p {
+            font-size: 1.1rem;
+            color: #34495e;
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .profile-details strong {
+            color: #7f8c8d;
+            font-weight: 500;
+            flex: 0 0 40%;
+        }
+        .btn-edit {
+            display: block;
+            background: #3498db;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            margin: 20px auto 0;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-edit:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-link a:hover {
+            color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+{% endblock %}

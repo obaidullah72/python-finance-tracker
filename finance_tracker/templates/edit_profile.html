@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+    <div class="form-container">
+        <h1 class="form-title">Edit Your Profile</h1>
+        <form method="post" class="modern-form">
+            {% csrf_token %}
+            <input type="hidden" name="_method" value="PUT"> <!-- Simulate PUT -->
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="error">{{ form.username.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            <button type="submit" class="btn btn-success">Save Changes</button>
+        </form>
+        <p class="back-link"><a href="{% url 'profile' %}">Back to Profile</a></p>
+    </div>
+
+    <style>
+        .form-container {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 35px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease forwards;
+        }
+        .form-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .modern-form .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .modern-form label {
+            display: block;
+            font-weight: 500;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        .modern-form input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f9f9f9;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .modern-form input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+            transform: translateY(-2px);
+            outline: none;
+        }
+        .btn-success {
+            background: #2ecc71;
+            border: none;
+            border-radius: 25px;
+            padding: 12px;
+            width: 100%;
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-success:hover {
+            background: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            animation: shake 0.3s ease;
+        }
+        .alert-danger {
+            background: #ffebeb;
+            color: #e74c3c;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            animation: fadeIn 0.3s ease;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .back-link a:hover {
+            color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+{% endblock %}

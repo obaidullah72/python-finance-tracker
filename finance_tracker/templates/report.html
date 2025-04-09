@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Report{% endblock %}
+{% block content %}
+    <div class="report-container">
+        <h1 class="report-title">Download Report</h1>
+        <p class="report-subtitle">Select a month to download your report:</p>
+        <form method="get" class="report-form">
+            <div class="form-group">
+                <label for="month">Month:</label>
+                <input type="month" id="month" name="month" value="{{ selected_month }}" class="form-control">
+            </div>
+            <div class="report-buttons">
+                <button type="submit" name="type" value="csv" class="btn btn-primary">Download CSV</button>
+                <button type="submit" name="type" value="pdf" class="btn btn-primary">Download PDF</button>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        .report-container {
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .report-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .report-subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .report-form .form-group {
+            margin-bottom: 20px;
+        }
+        .report-form label {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-right: 10px;
+        }
+        .report-form .form-control {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            display: inline-block;
+            width: auto;
+        }
+        .report-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .btn-primary {
+            background: #3498db;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+    </style>
+{% endblock %}

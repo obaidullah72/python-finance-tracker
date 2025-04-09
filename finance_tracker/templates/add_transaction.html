@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}Add Transaction{% endblock %}
+{% block content %}
+    <div class="form-container">
+        <h1 class="form-title">Add Transaction</h1>
+        <form method="post" class="modern-form" id="transactionForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Transaction Type</label>
+                {{ form.transaction_type }}
+            </div>
+            <div class="form-group" id="categoryField" style="display: {% if transaction_type == 'expense' %}block{% else %}none{% endif %};">
+                <label for="{{ form.category.id_for_label }}">Category</label>
+                <select name="category" id="{{ form.category.id_for_label }}" class="form-control">
+                    <option value="">-- Select Category --</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.category.errors %}
+                    <div class="error">{{ form.category.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.amount.id_for_label }}">Amount</label>
+                {{ form.amount }}
+                {% if form.amount.errors %}
+                    <div class="error">{{ form.amount.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group" id="dateField">
+                <label for="{{ form.date.id_for_label }}">Date</label>
+                {{ form.date }}
+                {% if form.date.errors %}
+                    <div class="error">{{ form.date.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group" id="descriptionField" style="display: {% if transaction_type == 'expense' %}block{% else %}none{% endif %};">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="error">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
+
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .modern-form .form-group {
+            margin-bottom: 20px;
+        }
+        .modern-form label {
+            display: block;
+            font-weight: 500;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        .modern-form input, .modern-form select, .modern-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .modern-form input:focus, .modern-form select:focus, .modern-form textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .modern-form .form-group input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        .btn-success {
+            background: #2ecc71;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+        }
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('transactionForm');
+            const typeRadios = form.querySelectorAll('input[name="transaction_type"]');
+            const categoryField = document.getElementById('categoryField');
+            const descriptionField = document.getElementById('descriptionField');
+
+            function updateFields() {
+                const selectedType = form.querySelector('input[name="transaction_type"]:checked').value;
+                if (selectedType === 'income') {
+                    categoryField.style.display = 'none';
+                    descriptionField.style.display = 'none';
+                } else {
+                    categoryField.style.display = 'block';
+                    descriptionField.style.display = 'block';
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newCategoryField = doc.getElementById('categoryField');
+                        categoryField.innerHTML = newCategoryField.innerHTML;
+                    });
+                }
+            }
+
+            typeRadios.forEach(radio => {
+                radio.addEventListener('change', updateFields);
+            });
+
+            updateFields();
+        });
+    </script>
+{% endblock %}

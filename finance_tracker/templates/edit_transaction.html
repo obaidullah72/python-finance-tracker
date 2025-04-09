@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Edit Transaction{% endblock %}
+{% block content %}
+    <div class="form-container">
+        <h1 class="form-title">Edit Transaction</h1>
+        <form method="post" class="modern-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Update</button>
+        </form>
+    </div>
+
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .modern-form p {
+            margin-bottom: 20px;
+        }
+        .modern-form label {
+            display: block;
+            font-weight: 500;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        .modern-form input, .modern-form select, .modern-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .modern-form input:focus, .modern-form select:focus, .modern-form textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .btn-success {
+            background: #2ecc71;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+        }
+        .btn-success:hover {
+            background: #27ae60;
+        }
+    </style>
+{% endblock %}
