@@ -1,6 +1,5 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -17,34 +16,9 @@ import csv, json
 from decimal import Decimal
 from django.shortcuts import render
 from .models import Transaction, Category
-from .forms import TransactionForm, RegisterForm, LoginForm, CustomUserChangeForm, CategoryForm
+from .forms import TransactionForm, LoginForm, CustomUserChangeForm, CategoryForm
 
 
-
-class RegisterView(View):
-    def get(self, request):
-        form = RegisterForm()
-        return render(request, 'tracker/register.html', {'form': form})
-
-    def post(self, request):
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('tracker-dashboard')
-        return render(request, 'tracker/register.html', {'form': form})
-
-
-class CustomLoginView(LoginView):
-    template_name = 'tracker/login.html'
-    authentication_form = LoginForm
-
-
-class CustomLogoutView(LogoutView):
-    next_page = 'login'
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
