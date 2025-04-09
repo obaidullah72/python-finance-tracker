@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'tracker/base.html' %}
 {% block title %}Categories{% endblock %}
 {% block content %}
     <div class="category-container">
         <h1 class="category-title">Your Categories</h1>
         <div class="button-group">
-            <a href="{% url 'dashboard' %}" class="btn btn-back">Back to Dashboard</a>
+            <a href="{% url 'tracker-dashboard' %}" class="btn btn-back">Back to Dashboard</a>
             <a href="{% url 'category_add' %}" class="btn btn-add">Add Category</a>
         </div>
 

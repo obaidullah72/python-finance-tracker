@@ -24,7 +24,7 @@ from .forms import TransactionForm, RegisterForm, LoginForm, CustomUserChangeFor
 class RegisterView(View):
     def get(self, request):
         form = RegisterForm()
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'tracker/register.html', {'form': form})
 
     def post(self, request):
         form = RegisterForm(request.POST)
@@ -34,12 +34,12 @@ class RegisterView(View):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('dashboard')
-        return render(request, 'register.html', {'form': form})
+            return redirect('tracker-dashboard')
+        return render(request, 'tracker/register.html', {'form': form})
 
 
 class CustomLoginView(LoginView):
-    template_name = 'login.html'
+    template_name = 'tracker/login.html'
     authentication_form = LoginForm
 
 
@@ -48,7 +48,7 @@ class CustomLogoutView(LogoutView):
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard.html'
+    template_name = 'tracker/dashboard.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -99,8 +99,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 class AddTransactionView(LoginRequiredMixin, CreateView):
     model = Transaction
     form_class = TransactionForm
-    template_name = 'add_transaction.html'
-    success_url = reverse_lazy('dashboard')
+    template_name = 'tracker/add_transaction.html'
+    success_url = reverse_lazy('tracker-dashboard')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -119,24 +119,32 @@ class AddTransactionView(LoginRequiredMixin, CreateView):
             else:
                 form.add_error('category', "Please select an expense category.")
                 return self.form_invalid(form)
-        elif transaction_type == 'income':
-            transaction.category = None
+        elif transaction_type == 'income' and category:
+            if category.is_income:
+                transaction.category = category
+            else:
+                form.add_error('category', "Please select an income category.")
+                return self.form_invalid(form)
         transaction.save()
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        transaction_type = self.request.POST.get('transaction_type', 'expense') if self.request.method == 'POST' else 'expense'
-        categories = Category.objects.filter(user=self.request.user, is_income=(transaction_type == 'income'))
+        # Default to no transaction type on GET request
+        transaction_type = self.request.POST.get('transaction_type') if self.request.method == 'POST' else None
+        if transaction_type:
+            categories = Category.objects.filter(user=self.request.user, is_income=(transaction_type == 'income'))
+        else:
+            categories = Category.objects.none()  # No categories until type is selected
         context['categories'] = categories
         context['transaction_type'] = transaction_type
         return context
-
+    
 
 class EditTransactionView(LoginRequiredMixin, UpdateView):
     model = Transaction
     form_class = TransactionForm
-    template_name = 'edit_transaction.html'
+    template_name = 'tracker/edit_transaction.html'
     success_url = reverse_lazy('transaction_list')
 
     def get_form_kwargs(self):
@@ -147,13 +155,13 @@ class EditTransactionView(LoginRequiredMixin, UpdateView):
 
 class DeleteTransactionView(LoginRequiredMixin, DeleteView):
     model = Transaction
-    template_name = 'transaction_list.html'
+    template_name = 'tracker/transaction_list.html'
     success_url = reverse_lazy('transaction_list')
 
 
 class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
-    template_name = 'transaction_list.html'
+    template_name = 'tracker/transaction_list.html'
     context_object_name = 'transactions'
 
     def get_queryset(self):
@@ -240,13 +248,13 @@ class ReportView(LoginRequiredMixin, View):
             doc.build([table])
             return response
 
-        return render(request, 'report.html', {
+        return render(request, 'tracker/report.html', {
             'selected_month': filename,
         })
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'profile.html'
+    template_name = 'tracker/profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -256,7 +264,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 class EditProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = CustomUserChangeForm  # Use the custom form
-    template_name = 'edit_profile.html'  # Ensure this matches your template path
+    template_name = 'tracker/edit_profile.html'  # Ensure this matches your template path
     success_url = reverse_lazy('profile')
 
     def get_object(self, queryset=None):
@@ -281,7 +289,7 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
     
 class CategoryListView(LoginRequiredMixin, ListView):
     model = Category
-    template_name = 'category_list.html'
+    template_name = 'tracker/category_list.html'
     context_object_name = 'categories'
 
     def get_queryset(self):
@@ -291,7 +299,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
 class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
-    template_name = 'add_category.html'  # New template
+    template_name = 'tracker/add_category.html'  # New template
     success_url = reverse_lazy('category_list')
 
     def form_valid(self, form):
@@ -302,7 +310,7 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
 class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
     form_class = CategoryForm
-    template_name = 'edit_category.html'  # New template
+    template_name = 'tracker/edit_category.html'  # New template
     success_url = reverse_lazy('category_list')
 
     def get_queryset(self):
@@ -311,8 +319,10 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
 # Category Delete View
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = Category
-    template_name = 'delete_category.html'  # New template for confirmation
+    template_name = 'tracker/delete_category.html'  # New template for confirmation
     success_url = reverse_lazy('category_list')
 
     def get_queryset(self):
         return Category.objects.filter(user=self.request.user)
+    
+    

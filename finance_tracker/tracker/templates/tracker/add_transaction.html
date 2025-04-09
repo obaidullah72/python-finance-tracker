@@ -1,0 +1,171 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Add Transaction{% endblock %}
+{% block content %}
+<div class="form-container">
+    <h1 class="form-title">Add Transaction</h1>
+    <form method="post" class="modern-form" id="transactionForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Transaction Type</label>
+            {{ form.transaction_type }}
+            {% if form.transaction_type.errors %}
+                <div class="error">{{ form.transaction_type.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Fields container, hidden by default -->
+        <div id="fieldsContainer" style="display: none;">
+            <div class="form-group" id="categoryField">
+                <label for="{{ form.category.id_for_label }}">Category</label>
+                <select name="category" id="{{ form.category.id_for_label }}" class="form-control">
+                    <option value="">-- Select Category --</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.category.errors %}
+                    <div class="error">{{ form.category.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group" id="amountField">
+                <label for="{{ form.amount.id_for_label }}">Amount</label>
+                {{ form.amount }}
+                {% if form.amount.errors %}
+                    <div class="error">{{ form.amount.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group" id="dateField">
+                <label for="{{ form.date.id_for_label }}">Date</label>
+                {{ form.date }}
+                {% if form.date.errors %}
+                    <div class="error">{{ form.date.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group" id="descriptionField">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="error">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .form-title {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .modern-form .form-group {
+        margin-bottom: 20px;
+    }
+    .modern-form label {
+        display: block;
+        font-weight: 500;
+        color: #7f8c8d;
+        margin-bottom: 5px;
+    }
+    .modern-form input, .modern-form select, .modern-form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+    .modern-form input:focus, .modern-form select:focus, .modern-form textarea:focus {
+        border-color: #3498db;
+        outline: none;
+    }
+    .modern-form .form-group input[type="radio"] {
+        width: auto;
+        margin-right: 10px;
+    }
+    .btn-success {
+        background: #2ecc71;
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px;
+        width: 100%;
+        font-size: 1.1rem;
+        transition: background 0.3s ease;
+    }
+    .btn-success:hover {
+        background: #27ae60;
+    }
+    .error {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('transactionForm');
+        const typeRadios = form.querySelectorAll('input[name="transaction_type"]');
+        const fieldsContainer = document.getElementById('fieldsContainer');
+        const categoryField = document.getElementById('categoryField');
+        const amountField = document.getElementById('amountField');
+        const dateField = document.getElementById('dateField');
+        const descriptionField = document.getElementById('descriptionField');
+
+        function updateFields() {
+            const selectedType = form.querySelector('input[name="transaction_type"]:checked');
+            if (!selectedType) {
+                fieldsContainer.style.display = 'none';
+                return;
+            }
+
+            fieldsContainer.style.display = 'block';
+            const typeValue = selectedType.value;
+
+            // Fetch updated categories based on transaction type
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newCategoryField = doc.getElementById('categoryField');
+                categoryField.innerHTML = newCategoryField.innerHTML;
+            });
+
+            // Show/hide fields based on transaction type
+            if (typeValue === 'income') {
+                categoryField.style.display = 'block';
+                amountField.style.display = 'block';
+                dateField.style.display = 'block';
+                descriptionField.style.display = 'none';
+            } else if (typeValue === 'expense') {
+                categoryField.style.display = 'block';
+                amountField.style.display = 'block';
+                dateField.style.display = 'block';
+                descriptionField.style.display = 'block';
+            }
+        }
+
+        typeRadios.forEach(radio => {
+            radio.addEventListener('change', updateFields);
+        });
+
+        // Initial check on page load
+        updateFields();
+    });
+</script>
+{% endblock %}

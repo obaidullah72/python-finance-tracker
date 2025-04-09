@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'tracker/base.html' %}
 {% block title %}Profile{% endblock %}
 {% block content %}
     <div class="profile-container">
@@ -8,7 +8,7 @@
             <p><strong>Email:</strong> {{ user.email|default:"Not provided" }}</p>
         </div>
         <a href="{% url 'edit_profile' %}" class="btn btn-edit">Edit Profile</a>
-        <p class="back-link"><a href="{% url 'dashboard' %}">Back to Dashboard</a></p>
+        <p class="back-link"><a href="{% url 'tracker-dashboard' %}">Back to Dashboard</a></p>
     </div>
 
     <style>

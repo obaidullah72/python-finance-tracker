@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
-{% block title %}Register{% endblock %}
+{% extends 'tracker/base.html' %}
+{% block title %}Login{% endblock %}
 {% block content %}
     <div class="form-container">
-        <h1 class="form-title">Register</h1>
-        <form method="post" class="modern-form">
+        <h1 class="form-title">Login</h1>
+        <form method="post" action="{% url 'login' %}" class="modern-form">
             {% csrf_token %}
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}">Username</label>
@@ -13,24 +13,10 @@
                 {% endif %}
             </div>
             <div class="form-group">
-                <label for="{{ form.email.id_for_label }}">Email</label>
-                {{ form.email }}
-                {% if form.email.errors %}
-                    <div class="error">{{ form.email.errors }}</div>
-                {% endif %}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.password1.id_for_label }}">Password</label>
-                {{ form.password1 }}
-                {% if form.password1.errors %}
-                    <div class="error">{{ form.password1.errors }}</div>
-                {% endif %}
-            </div>
-            <div class="form-group">
-                <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
-                {{ form.password2 }}
-                {% if form.password2.errors %}
-                    <div class="error">{{ form.password2.errors }}</div>
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="error">{{ form.password.errors }}</div>
                 {% endif %}
             </div>
             {% if form.non_field_errors %}
@@ -38,9 +24,9 @@
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}
-            <button type="submit" class="btn btn-success">Register</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
-        <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        <p class="signup-link">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
     </div>
 
     <style>
@@ -80,8 +66,8 @@
             border-color: #3498db;
             outline: none;
         }
-        .btn-success {
-            background: #2ecc71;
+        .btn-primary {
+            background: #3498db;
             border: none;
             border-radius: 25px;
             padding: 12px;
@@ -90,8 +76,8 @@
             color: #fff;
             transition: background 0.3s ease;
         }
-        .btn-success:hover {
-            background: #27ae60;
+        .btn-primary:hover {
+            background: #2980b9;
         }
         .error {
             color: #e74c3c;
@@ -106,17 +92,17 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        .login-link {
+        .signup-link {
             text-align: center;
             margin-top: 15px;
             color: #7f8c8d;
         }
-        .login-link a {
+        .signup-link a {
             color: #3498db;
             text-decoration: none;
             font-weight: 500;
         }
-        .login-link a:hover {
+        .signup-link a:hover {
             text-decoration: underline;
         }
     </style>

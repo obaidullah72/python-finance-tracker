@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Finance Tracker{% endblock %}
+
+{% block content %}
+    <div class="text-center mb-5">
+        <h1 class="display-4 font-weight-bold text-primary">Welcome to the Finance Tracker App</h1>
+        <p class="lead text-muted mb-4">Manage your finances efficiently and effortlessly. Choose an option below to get started.</p>
+
+        <div class="row justify-content-center g-4">
+            <!-- Finance Tracker Card -->
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                    <div class="card-body text-center">
+                        <i class="bi bi-wallet2" style="font-size: 3rem; color: #3498db;"></i>
+                        <h3 class="card-title mt-3 text-dark">Finance Tracker</h3>
+                        <p class="card-text text-muted mb-4">Track your expenses and income in a user-friendly dashboard.</p>
+                        <a href="{% url 'tracker-dashboard' %}" class="btn btn-primary btn-lg">Go to Tracker</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Planner Card -->
+            <div class="col-md-4">
+                <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                    <div class="card-body text-center">
+                        <i class="bi bi-pencil-square" style="font-size: 3rem; color: #3498db;"></i>
+                        <h3 class="card-title mt-3 text-dark">Budget Planner</h3>
+                        <p class="card-text text-muted mb-4">Plan and manage your budget with ease using our intuitive tools.</p>
+                        <a href="{% url 'budget_dashboard' %}" class="btn btn-primary btn-lg">Go to Planner</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Global Styles */
+        body {
+            background: linear-gradient(135deg, #f2f6fa, #e4f1fe);
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Card Hover Effects */
+        .card {
+            transition: transform 0.4s ease, box-shadow 0.4s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-15px); /* Lifts the card */
+            box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.2); /* Larger shadow */
+        }
+
+        .card-body {
+            background: #fff;
+            padding: 2rem;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .card-body:hover {
+            background: #f7f9fc; /* Lighten the background on hover */
+        }
+
+        /* Card Icon Hover */
+        .card-body i {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .card-body:hover i {
+            transform: scale(1.1); /* Slightly enlarges the icon */
+            color: #2980b9;
+        }
+
+        /* Button Hover Effects */
+        .btn-primary {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9; /* Slightly darker blue on hover */
+            transform: scale(1.05); /* Enlarges button */
+        }
+
+        /* Text and Heading Enhancements */
+        .display-4 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .text-muted {
+            color: #7f8c8d;
+        }
+
+        /* Adding subtle animations */
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .text-center {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .card-body {
+            animation: fadeInUp 1.2s ease-out;
+        }
+    </style>
+{% endblock %}

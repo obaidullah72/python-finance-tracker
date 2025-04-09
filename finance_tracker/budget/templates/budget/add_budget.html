@@ -1,0 +1,71 @@
+{% extends 'budget/base.html' %}
+
+{% block title %}Add Budget{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Form Styling */
+    .budget-form {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 20px auto;
+    }
+
+    .budget-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .budget-form input, .budget-form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .budget-form button {
+        width: 100%;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 15px;
+        text-align: center;
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>Add New Budget</h2>
+<form method="POST" class="budget-form">
+    {% csrf_token %}
+    <label for="category">Category:</label>
+    <select name="category" id="category" required>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="amount">Amount:</label>
+    <input type="number" step="0.01" name="amount" id="amount" required placeholder="Enter amount">
+
+    <label for="period">Period:</label>
+    <select name="period" id="period" required>
+        <option value="monthly">Monthly</option>
+        <option value="weekly">Weekly</option>
+    </select>
+
+    <label for="start_date">Start Date:</label>
+    <input type="date" name="start_date" id="start_date" required>
+
+    <button type="submit">Save Budget</button>
+</form>
+<a href="{% url 'budget_dashboard' %}" class="nav-link back-link">Back to Dashboard</a>
+{% endblock %}
