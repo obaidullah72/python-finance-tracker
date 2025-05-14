@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Add New Bill</h1>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Fill in the details to track your bill.</p>
+        </div>
+        <!-- Form -->
+        <form method="post" class="px-6 py-6">
+            {% csrf_token %}
+            <div class="space-y-6">
+                <!-- Bill Name -->
+                <div>
+                    <label for="id_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bill Name</label>
+                    <div class="mt-1">
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.name.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Amount -->
+                <div>
+                    <label for="id_amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Amount</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 dark:text-gray-400 sm:text-sm">$</span>
+                        </div>
+                        {{ form.amount }}
+                        {% if form.amount.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.amount.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Due Date -->
+                <div>
+                    <label for="id_due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Due Date</label>
+                    <div class="mt-1">
+                        {{ form.due_date }}
+                        {% if form.due_date.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.due_date.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Frequency -->
+                <div>
+                    <label for="id_frequency" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Frequency</label>
+                    <div class="mt-1">
+                        {{ form.frequency }}
+                        {% if form.frequency.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.frequency.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-8 flex items-center justify-end space-x-4">
+                <a href="{% url 'bill_dashboard' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" aria-label="Cancel and return to dashboard">
+                    Cancel
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" aria-label="Save new bill">
+                    Save Bill
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Custom Styles for Form Inputs -->
+<style>
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+        appearance: none;
+        background-color: #fff;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        padding: 0.5rem 0.75rem;
+        width: 100%;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    input[type="number"] {
+        padding-left: 2rem;
+    }
+    select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+    }
+    input:focus,
+    select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    [data-theme="dark"] input[type="text"],
+    [data-theme="dark"] input[type="number"],
+    [data-theme="dark"] input[type="date"],
+    [data-theme="dark"] select {
+        background-color: #1f2937;
+        border-color: #4b5563;
+        color: #d1d5db;
+    }
+    [data-theme="dark"] input:focus,
+    [data-theme="dark"] select:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+</style>
+{% endblock %}

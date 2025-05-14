@@ -3,109 +3,97 @@
 {% block title %}Home - Finance Tracker{% endblock %}
 
 {% block content %}
+<div class="container py-5">
     <div class="text-center mb-5">
-        <h1 class="display-4 font-weight-bold text-primary">Welcome to the Finance Tracker App</h1>
-        <p class="lead text-muted mb-4">Manage your finances efficiently and effortlessly. Choose an option below to get started.</p>
+        <h1 class="display-4 fw-bold text-primary">Welcome to the Finance Tracker App</h1>
+        <p class="lead text-muted">Manage your finances efficiently and effortlessly. Choose an option below to get started.</p>
+    </div>
 
-        <div class="row justify-content-center g-4">
-            <!-- Finance Tracker Card -->
-            <div class="col-md-4">
-                <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
-                    <div class="card-body text-center">
-                        <i class="bi bi-wallet2" style="font-size: 3rem; color: #3498db;"></i>
-                        <h3 class="card-title mt-3 text-dark">Finance Tracker</h3>
-                        <p class="card-text text-muted mb-4">Track your expenses and income in a user-friendly dashboard.</p>
-                        <a href="{% url 'tracker-dashboard' %}" class="btn btn-primary btn-lg">Go to Tracker</a>
-                    </div>
+    <div class="row justify-content-center g-4">
+        <!-- Finance Tracker Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0 rounded-4 h-100">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4">
+                    <i class="bi bi-wallet2 mb-3" style="font-size: 3rem; color: #0d6efd;"></i>
+                    <h5 class="card-title fw-semibold text-dark">Finance Tracker</h5>
+                    <p class="card-text text-muted">Track your expenses and income in a user-friendly dashboard.</p>
+                    <a href="{% url 'tracker-dashboard' %}" class="btn btn-primary btn-lg mt-3 w-100">Go to Tracker</a>
                 </div>
             </div>
+        </div>
 
-            <!-- Budget Planner Card -->
-            <div class="col-md-4">
-                <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
-                    <div class="card-body text-center">
-                        <i class="bi bi-pencil-square" style="font-size: 3rem; color: #3498db;"></i>
-                        <h3 class="card-title mt-3 text-dark">Budget Planner</h3>
-                        <p class="card-text text-muted mb-4">Plan and manage your budget with ease using our intuitive tools.</p>
-                        <a href="{% url 'budget_dashboard' %}" class="btn btn-primary btn-lg">Go to Planner</a>
-                    </div>
+        <!-- Budget Planner Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0 rounded-4 h-100">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4">
+                    <i class="bi bi-bar-chart-line mb-3" style="font-size: 3rem; color: #0d6efd;"></i>
+                    <h5 class="card-title fw-semibold text-dark">Budget Planner</h5>
+                    <p class="card-text text-muted">Plan and manage your budget with ease using our intuitive tools.</p>
+                    <a href="{% url 'budget_dashboard' %}" class="btn btn-primary btn-lg mt-3 w-100">Go to Planner</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bill Management Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0 rounded-4 h-100">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center p-4">
+                    <i class="bi bi-receipt mb-3" style="font-size: 3rem; color: #0d6efd;"></i>
+                    <h5 class="card-title fw-semibold text-dark">Bill Management</h5>
+                    <p class="card-text text-muted">Easily track and manage bills. Get notified before due dates.</p>
+                    <a href="{% url 'bill_dashboard' %}" class="btn btn-primary btn-lg mt-3 w-100">Go to Bills</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <style>
-        /* Global Styles */
-        body {
-            background: linear-gradient(135deg, #f2f6fa, #e4f1fe);
-            font-family: 'Roboto', sans-serif;
-            color: #333;
-            overflow-x: hidden;
-        }
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f9ff, #e6f0fa);
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
 
-        /* Card Hover Effects */
-        .card {
-            transition: transform 0.4s ease, box-shadow 0.4s ease-in-out;
-        }
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .card:hover {
-            transform: translateY(-15px); /* Lifts the card */
-            box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.2); /* Larger shadow */
-        }
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
 
-        .card-body {
-            background: #fff;
-            padding: 2rem;
-            transition: background 0.3s ease-in-out;
-        }
+    .card-body:hover {
+        background-color: #f9fbff;
+    }
 
-        .card-body:hover {
-            background: #f7f9fc; /* Lighten the background on hover */
-        }
+    .card-body i {
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
 
-        /* Card Icon Hover */
-        .card-body i {
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
+    .card-body:hover i {
+        transform: scale(1.1);
+        color: #0056b3;
+    }
 
-        .card-body:hover i {
-            transform: scale(1.1); /* Slightly enlarges the icon */
-            color: #2980b9;
-        }
+    .btn-primary {
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
 
-        /* Button Hover Effects */
-        .btn-primary {
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
 
-        .btn-primary:hover {
-            background-color: #2980b9; /* Slightly darker blue on hover */
-            transform: scale(1.05); /* Enlarges button */
-        }
+    .text-center,
+    .card-body {
+        animation: fadeInUp 0.8s ease-out;
+    }
 
-        /* Text and Heading Enhancements */
-        .display-4 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-
-        .text-muted {
-            color: #7f8c8d;
-        }
-
-        /* Adding subtle animations */
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .text-center {
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .card-body {
-            animation: fadeInUp 1.2s ease-out;
-        }
-    </style>
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+</style>
 {% endblock %}

@@ -9,6 +9,7 @@ urlpatterns = [
     path('', home, name='home'), 
     path('tracker/', include('tracker.urls'), name='tracker'),
     path('budget/', include('budget.urls'), name='budget'), 
+    path('bills/', include('bills.urls'), name='bills'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
